@@ -1,17 +1,20 @@
-FROM python:3.9
+FROM ubuntu:16.04
 
-RUN pip install --upgrade pip
+ENV COLOR "red"
+RUN apt-get update -y && \
+    apt-get install -y python-pip python-dev
+
+# We copy just the requirements.txt first to leverage Docker cache
+COPY ./requirements.txt /app/requirements.txt
+
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY . /app
 
-#set User
-USER root
+EXPOSE 8080
+ENTRYPOINT [ "python" ]
 
-EXPOSE 5000
-ENV FLASK_APP=app.py
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
+CMD [ "app.py" ]
