@@ -12,6 +12,6 @@ COPY . .
 #set User
 USER root
 
-EXPOSE 5000
+EXPOSE 8080
 ENV FLASK_APP=app.py
 CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
